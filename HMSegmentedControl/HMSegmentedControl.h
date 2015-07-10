@@ -11,25 +11,25 @@
 @class HMSegmentedControl;
 
 typedef void (^IndexChangeBlock)(NSInteger index);
-typedef NSAttributedString *(^HMTitleFormatterBlock)(HMSegmentedControl *segmentedControl, NSString *title, NSUInteger index, BOOL selected);
+typedef NSAttributedString * __nullable (^HMTitleFormatterBlock)(HMSegmentedControl * __nonnull segmentedControl, NSString * __nullable title, NSUInteger index, BOOL selected);
 
-typedef enum {
+typedef NS_ENUM(NSInteger, HMSegmentedControlSelectionStyle) {
     HMSegmentedControlSelectionStyleTextWidthStripe, // Indicator width will only be as big as the text width
     HMSegmentedControlSelectionStyleFullWidthStripe, // Indicator width will fill the whole segment
     HMSegmentedControlSelectionStyleBox, // A rectangle that covers the whole segment
     HMSegmentedControlSelectionStyleArrow // An arrow in the middle of the segment pointing up or down depending on `HMSegmentedControlSelectionIndicatorLocation`
-} HMSegmentedControlSelectionStyle;
+};
 
-typedef enum {
-    HMSegmentedControlSelectionIndicatorLocationUp,
-    HMSegmentedControlSelectionIndicatorLocationDown,
+typedef NS_ENUM(NSInteger, HMSegmentedControlSelectionIndicatorLocation) {
+  HMSegmentedControlSelectionIndicatorLocationUp,
+  HMSegmentedControlSelectionIndicatorLocationDown,
 	HMSegmentedControlSelectionIndicatorLocationNone // No selection indicator
-} HMSegmentedControlSelectionIndicatorLocation;
+};
 
-typedef enum {
+typedef NS_ENUM(NSInteger, HMSegmentedControlSegmentWidthStyle) {
     HMSegmentedControlSegmentWidthStyleFixed, // Segment width is fixed
     HMSegmentedControlSegmentWidthStyleDynamic, // Segment width will only be as big as the text width (including inset)
-} HMSegmentedControlSegmentWidthStyle;
+};
 
 typedef NS_OPTIONS(NSInteger, HMSegmentedControlBorderType) {
     HMSegmentedControlBorderTypeNone = 0,
@@ -43,64 +43,64 @@ enum {
     HMSegmentedControlNoSegment = -1   // Segment index for no selected segment
 };
 
-typedef enum {
+typedef NS_ENUM(unsigned int, HMSegmentedControlType) {
     HMSegmentedControlTypeText,
     HMSegmentedControlTypeImages,
 	HMSegmentedControlTypeTextImages
-} HMSegmentedControlType;
+};
 
 @interface HMSegmentedControl : UIControl
 
-@property (nonatomic, strong) NSArray *sectionTitles;
-@property (nonatomic, strong) NSArray *sectionImages;
-@property (nonatomic, strong) NSArray *sectionSelectedImages;
+@property (nonatomic, strong, nullable) NSArray *sectionTitles;
+@property (nonatomic, strong, nullable) NSArray *sectionImages;
+@property (nonatomic, strong, nullable) NSArray *sectionSelectedImages;
 
 /**
  Provide a block to be executed when selected index is changed.
  
  Alternativly, you could use `addTarget:action:forControlEvents:`
  */
-@property (nonatomic, copy) IndexChangeBlock indexChangeBlock;
+@property (nonatomic, copy, nullable) IndexChangeBlock indexChangeBlock;
 
 /**
  Used to apply custom text styling to titles when set.
  
  When this block is set, no additional styling is applied to the `NSAttributedString` object returned from this block.
  */
-@property (nonatomic, copy) HMTitleFormatterBlock titleFormatter;
+@property (nonatomic, copy, nullable) HMTitleFormatterBlock titleFormatter;
 
 /**
  Text attributes to apply to item title text.
  */
-@property (nonatomic, strong) NSDictionary *titleTextAttributes UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong, nullable) NSDictionary *titleTextAttributes UI_APPEARANCE_SELECTOR;
 
 /*
  Text attributes to apply to selected item title text.
  
  Attributes not set in this dictionary are inherited from `titleTextAttributes`.
  */
-@property (nonatomic, strong) NSDictionary *selectedTitleTextAttributes UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong, nullable) NSDictionary *selectedTitleTextAttributes UI_APPEARANCE_SELECTOR;
 
 /**
  Segmented control background color.
  
  Default is `[UIColor whiteColor]`
  */
-@property (nonatomic, strong) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong, nonnull) UIColor *backgroundColor UI_APPEARANCE_SELECTOR;
 
 /**
  Color for the selection indicator stripe/box
  
  Default is `R:52, G:181, B:229`
  */
-@property (nonatomic, strong) UIColor *selectionIndicatorColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong, nonnull) UIColor *selectionIndicatorColor UI_APPEARANCE_SELECTOR;
 
 /**
  Color for the vertical divider between segments.
  
  Default is `[UIColor blackColor]`
  */
-@property (nonatomic, strong) UIColor *verticalDividerColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong, nonnull) UIColor *verticalDividerColor UI_APPEARANCE_SELECTOR;
 
 /**
  Opacity for the seletion indicator box.
@@ -156,7 +156,7 @@ typedef enum {
  
  Default is `[UIColor blackColor]`
  */
-@property (nonatomic, strong) UIColor *borderColor;
+@property (nonatomic, strong, nonnull) UIColor *borderColor;
 
 /**
  Specifies the border width.
@@ -219,11 +219,11 @@ typedef enum {
  */
 @property (nonatomic) BOOL shouldAnimateUserSelection;
 
-- (id)initWithSectionTitles:(NSArray *)sectiontitles;
-- (id)initWithSectionImages:(NSArray *)sectionImages sectionSelectedImages:(NSArray *)sectionSelectedImages;
-- (instancetype)initWithSectionImages:(NSArray *)sectionImages sectionSelectedImages:(NSArray *)sectionSelectedImages titlesForSections:(NSArray *)sectiontitles;
+- (HMSegmentedControl * __nonnull)initWithCoder:(NSCoder * __nonnull)coder NS_DESIGNATED_INITIALIZER;
+- (HMSegmentedControl * __nonnull)initWithFrame:(CGRect)frame NS_DESIGNATED_INITIALIZER;
+- (HMSegmentedControl * __nonnull)initWithSectionTitles:(NSArray * __nonnull)sectiontitles NS_DESIGNATED_INITIALIZER;
+- (HMSegmentedControl * __nonnull)initWithSectionImages:(NSArray *__nonnull)sectionImages sectionSelectedImages:(NSArray *__nonnull)sectionSelectedImages NS_DESIGNATED_INITIALIZER;
+- (HMSegmentedControl * __nonnull)initWithSectionImages:(NSArray *__nonnull)sectionImages sectionSelectedImages:(NSArray *__nonnull)sectionSelectedImages titlesForSections:(NSArray *__nonnull)sectiontitles NS_DESIGNATED_INITIALIZER;
 - (void)setSelectedSegmentIndex:(NSUInteger)index animated:(BOOL)animated;
-- (void)setIndexChangeBlock:(IndexChangeBlock)indexChangeBlock;
-- (void)setTitleFormatter:(HMTitleFormatterBlock)titleFormatter;
 
 @end
